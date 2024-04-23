@@ -1,0 +1,36 @@
+{"flows":
+{"flowStartMilliseconds":"2019-06-25 08:36:47.096",
+"flowEndMilliseconds":"2019-06-25 08:36:47.675",
+"flowDurationMilliseconds":0.579,
+"reverseFlowDeltaMilliseconds":0.000,
+"protocolIdentifier":17,
+"sourceIPv4Address":"192.168.1.1",
+“sourceTransportPort":39396,
+"packetTotalCount":2,
+“octetTotalCount":156,
+"flowAttributes":"01",
+"sourceMacAddress":"38:d5:47:0c:25:d4:",
+"destinationIPv4Address":"192.168.1.225",
+"destinationTransportPort":137,
+…
+}}
+
+{
+    "flows": {
+      "flowStartMilliseconds": "\x1b[34m2019-06-25 08:36:47.096\x1b[0m",
+      "flowEndMilliseconds": "\x1b[34m2019-06-25 08:36:47.675\x1b[0m",
+      "flowDurationMilliseconds": \x1b[32m0.579\x1b[0m,
+      "reverseFlowDeltaMilliseconds": \x1b[32m0.000\x1b[0m,
+      "protocolIdentifier": \x1b[33m17\x1b[0m,
+      "sourceIPv4Address": "\x1b[31m192.168.1.1\x1b[0m",
+      "sourceTransportPort": \x1b[33m39396\x1b[0m,
+      "packetTotalCount": \x1b[32m2\x1b[0m,
+      "octetTotalCount": \x1b[32m156\x1b[0m,
+      "flowAttributes": "\x1b[36m01\x1b[0m",
+      "sourceMacAddress": "\x1b[35m38:d5:47:0c:25:d4:\x1b[0m",
+      "destinationIPv4Address": "\x1b[31m192.168.1.225\x1b[0m",
+      "destinationTransportPort": \x1b[33m137\x1b[0m
+      // Add more attributes as needed
+    }
+  }
+  
