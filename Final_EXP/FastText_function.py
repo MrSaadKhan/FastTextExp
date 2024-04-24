@@ -4,8 +4,8 @@ import clean_data, prepare_data
 import random
 import numpy as np
 
-def calculate_similarity(dev1, dev2, iterations=10000):
-    file_path = r'C:\Users\Saad Khan\OneDrive - UNSW\University\5th Yr\T1\Thesis A\Data'
+def calculate_similarity(file_path, dev1, dev2, iterations=10000):
+    # file_path = r'C:\Users\Saad Khan\OneDrive - UNSW\University\5th Yr\T1\Thesis A\Data'
 
     dev1_seen, dev1_unseen, dev2_seen, dev2_unseen = prepare_data.prepare_data(os.path.join(file_path, dev1), os.path.join(file_path, dev2))
 

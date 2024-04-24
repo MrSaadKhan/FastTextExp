@@ -17,7 +17,7 @@ def main(directory_path):
 
     # Iterate through each combination
     for dev1, dev2 in device_combinations:
-        calculate_similarity(dev1, dev2)
+        calculate_similarity(directory_path, dev1, dev2)
         print()
 
 if __name__ == "__main__":
