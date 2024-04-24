@@ -22,5 +22,5 @@ def main(directory_path):
 
 if __name__ == "__main__":
     # Directory path to read files from
-    directory_path = r'C:\Users\Saad Khan\OneDrive - UNSW\University\5th Yr\T1\Thesis A\Data'
+    directory_path = r'/home/iotresearch/saad/data/KDDI-IoT-2019/ipfix'
     main(directory_path)
