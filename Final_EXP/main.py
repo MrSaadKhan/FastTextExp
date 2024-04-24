@@ -15,6 +15,9 @@ def main(directory_path):
     # Generate combinations of 2 devices from file names
     device_combinations = list(combinations(files, 2))
 
+    # Include the reversed combinations
+    device_combinations += [(dev2, dev1) for dev1, dev2 in device_combinations]
+
     # Iterate through each combination
     for dev1, dev2 in device_combinations:
         calculate_similarity(directory_path, dev1, dev2)
