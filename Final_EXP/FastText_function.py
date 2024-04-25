@@ -9,6 +9,17 @@ def calculate_similarity(file_path, dev1, dev2, iterations=10000):
 
     dev1_seen, dev1_unseen, dev2_seen, dev2_unseen = prepare_data.prepare_data(os.path.join(file_path, dev1), os.path.join(file_path, dev2))
 
+    # Check if sequences are empty
+    if not dev1_seen or not dev2_seen:
+        print(f"One or both of the sequences for {dev1} and {dev2} are empty.")
+        print('\033[93mSeen Data:\033[0m')
+        print("Average similarity for 2 flows within a device:" + '\033[91mN/A\033[0m')
+        print("Standard deviation for 2 flows within a device:" + '\033[91mN/A\033[0m')
+
+        print("Average similarity for 2 flows with 2 different devices:" + '\033[91mN/A\033[0m')
+        print("Standard deviation for 2 flows with 2 different devices:" + '\033[91mN/A\033[0m')
+        return
+
     print('Creating FastText model')
     model = FastText(sentences=dev1_seen + dev2_seen, vector_size=100, window=5, min_count=1, workers=4)
     print('\033[92mFastText model created ✔\033[0m')

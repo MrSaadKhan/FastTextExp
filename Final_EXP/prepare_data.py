@@ -37,11 +37,18 @@ def prepare_data(file_path1, file_path2):
     #     remaining_items = [item for item in lst if item not in selected_items]
     #     return selected_items, remaining_items
     
+    # def random_split(lst, n):
+    #     selected_indices = random.sample(range(len(lst)), n)
+    #     selected_items = [lst[i] for i in selected_indices]
+    #     remaining_items = [item for idx, item in enumerate(lst) if idx not in selected_indices]
+    #     return selected_items, remaining_items
+
     def random_split(lst, n):
-        selected_indices = random.sample(range(len(lst)), n)
+        selected_indices = set(random.sample(range(len(lst)), n))
         selected_items = [lst[i] for i in selected_indices]
-        remaining_items = [item for idx, item in enumerate(lst) if idx not in selected_indices]
+        remaining_items = [lst[i] for i in range(len(lst)) if i not in selected_indices]
         return selected_items, remaining_items
+
 
     dev1_unseen, dev1_seen = random_split(dev1, math.floor(0.3 * num_elements[0]))
     del dev1
