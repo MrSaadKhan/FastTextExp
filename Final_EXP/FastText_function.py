@@ -18,6 +18,7 @@ def calculate_similarity(file_path, dev1, dev2, iterations=10000):
 
         print("Average similarity for 2 flows with 2 different devices:" + '\033[91mN/A\033[0m')
         print("Standard deviation for 2 flows with 2 different devices:" + '\033[91mN/A\033[0m')
+        
         return
 
     print('Creating FastText model')
