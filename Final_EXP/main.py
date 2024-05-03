@@ -3,6 +3,7 @@ import os
 from FastText_function_new import calculate_similarity
 from result_builder import build_results
 from itertools import combinations_with_replacement
+from tqdm import tqdm
 
 def main(directory_path):
     # Check if directory exists
@@ -22,13 +23,22 @@ def main(directory_path):
     # Include the reversed combinations
     device_combinations += [(dev2, dev1) for dev1, dev2 in device_combinations if (dev1, dev2) != (dev2, dev1)]
 
+    # Create a tqdm progress bar
+    progress_bar = tqdm(total=len(device_combinations))
+
     # Iterate through each combination
     for dev1, dev2 in device_combinations:
         # print(dev1, dev2)
         mu_diff_device_seen, sigma_diff_device_seen, mu_diff_device_unseen, sigma_diff_device_unseen = calculate_similarity(directory_path, dev1, dev2)
         build_results(device_indices, dev1, dev2, mu_diff_device_seen, sigma_diff_device_seen, mu_diff_device_unseen, sigma_diff_device_unseen)
-        print()
+        
+        # Update progress bar
+        progress_bar.update(1)
+        progress_bar.set_description(f"\033[33mProgress: {progress_bar.n / len(device_combinations) * 100:.2f}%\033[33m")
+
     # print(device_indices)
+    # Close progress bar
+    progress_bar.close()
 
 if __name__ == "__main__":
     # Directory path to read files from
