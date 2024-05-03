@@ -6,6 +6,43 @@ import random
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
+# def compute_sentence_similarity(model, sentence1, sentence2):
+#     """
+#     Compute similarity score between two sentences using word embeddings.
+    
+#     Parameters:
+#         model (gensim.models.FastText): Trained FastText model.
+#         sentence1 (str): First sentence.
+#         sentence2 (str): Second sentence.
+    
+#     Returns:
+#         float: Similarity score between the sentences.
+#     """
+#     # Function to compute sentence embedding
+#     def sentence_embedding(sentence, model):
+#         # Tokenize sentence into words
+#         words = simple_preprocess(sentence)
+#         # Get word embeddings
+#         word_embeddings = [model.wv[word] for word in words if word in model.wv]
+#         if word_embeddings:
+#             # Compute sentence embedding by averaging word embeddings
+#             sentence_embedding = np.mean(word_embeddings, axis=0)
+#             return sentence_embedding
+#         else:
+#             return None
+    
+#     # Compute embeddings for the sentences
+#     embedding1 = sentence_embedding(sentence1, model)
+#     embedding2 = sentence_embedding(sentence2, model)
+
+#     # Check if embeddings were found for both sentences
+#     if embedding1 is not None and embedding2 is not None:
+#         # Compute cosine similarity between embeddings
+#         similarity = cosine_similarity([embedding1], [embedding2])[0][0]
+#         return similarity
+#     else:
+#         return None
+
 def compute_sentence_similarity(model, sentence1, sentence2):
     """
     Compute similarity score between two sentences using word embeddings.
@@ -18,32 +55,22 @@ def compute_sentence_similarity(model, sentence1, sentence2):
     Returns:
         float: Similarity score between the sentences.
     """
-    # Function to compute sentence embedding
-    def sentence_embedding(sentence, model):
-        # Tokenize sentence into words
-        words = simple_preprocess(sentence)
-        # Get word embeddings
-        word_embeddings = [model.wv[word] for word in words if word in model.wv]
-        if word_embeddings:
-            # Compute sentence embedding by averaging word embeddings
-            sentence_embedding = np.mean(word_embeddings, axis=0)
-            return sentence_embedding
-        else:
-            return None
+    # Tokenize sentences into words
+    words1 = simple_preprocess(sentence1)
+    words2 = simple_preprocess(sentence2)
+
+    # Compute word embeddings for both sentences
+    word_embeddings1 = [model.wv[word] if word in model.wv else model.wv.get_vector(word) for word in words1]
+    word_embeddings2 = [model.wv[word] if word in model.wv else model.wv.get_vector(word) for word in words2]
+
+    # Compute sentence embeddings
+    embedding1 = np.mean(word_embeddings1, axis=0)
+    embedding2 = np.mean(word_embeddings2, axis=0)
+
+    # Compute cosine similarity between embeddings
+    similarity = cosine_similarity([embedding1], [embedding2])[0][0]
     
-    # Compute embeddings for the sentences
-    embedding1 = sentence_embedding(sentence1, model)
-    embedding2 = sentence_embedding(sentence2, model)
-
-    # Check if embeddings were found for both sentences
-    if embedding1 is not None and embedding2 is not None:
-        # Compute cosine similarity between embeddings
-        similarity = cosine_similarity([embedding1], [embedding2])[0][0]
-        return similarity
-    else:
-        return None
-
-
+    return similarity
 
 def calculate_similarity(file_path, dev1, dev2, iterations=10000):
     # file_path = r'C:\Users\Saad Khan\OneDrive - UNSW\University\5th Yr\T1\Thesis A\Data'
