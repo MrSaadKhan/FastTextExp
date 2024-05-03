@@ -34,7 +34,8 @@ def main(directory_path):
         
         # Update progress bar
         progress_bar.update(1)
-        progress_bar.set_description(f"\033[33mProgress: {progress_bar.n / len(device_combinations) * 100:.2f}%\033[33m")
+        # progress_bar.set_description(f"\033[33mProgress: {progress_bar.n / len(device_combinations) * 100:.2f}%\033[33m")
+        progress_bar.set_description(f"\033[33mProgress: {progress_bar.n / len(device_combinations) * 100:.2f}%\033[m")
 
     # print(device_indices)
     # Close progress bar
