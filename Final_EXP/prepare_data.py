@@ -57,12 +57,16 @@ def prepare_data(file_path1, file_path2):
     del dev2
 
     def apply_group_data(dataset):
-        unseen, seen = random_split(dataset, math.floor(0.3 * len(dataset)))
-        return group_data.group_data(unseen), group_data.group_data(seen)
+            # Check if the dataset is empty
+        if len(dataset) == 0:
+           return [], []
+        else:
+            unseen, seen = random_split(dataset, math.floor(0.3 * len(dataset)))
+            return group_data.group_data(unseen), group_data.group_data(seen)
     
     # dev1 = group_data.group_data(dev1)
     dev1_unseen, dev1_seen = apply_group_data(datasets[0])
     dev2_unseen, dev2_seen = apply_group_data(datasets[1])
-    
+    print(dev1_seen)
     print('\033[92mData prepared successfully ✔\033[0m')
     return dev1_seen, dev1_unseen, dev2_seen, dev2_unseen
