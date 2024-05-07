@@ -22,7 +22,7 @@ def main(directory_path):
 
     # Include the reversed combinations
     device_combinations += [(dev2, dev1) for dev1, dev2 in device_combinations if (dev1, dev2) != (dev2, dev1)]
-
+    
     # Create a tqdm progress bar
     progress_bar = tqdm(total=len(device_combinations))
 

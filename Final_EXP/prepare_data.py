@@ -1,6 +1,6 @@
 import random
 import math
-import clean_data
+import clean_data_by_time
 
 def prepare_data(file_path1, file_path2):
     file_path = [file_path1, file_path2]
@@ -8,7 +8,7 @@ def prepare_data(file_path1, file_path2):
     data = []
 
     for file in file_path:
-        temp, temp1 = clean_data.clean_data(file)
+        temp, temp1 = clean_data_by_time.clean_data(file)
         data.append(temp)  # Append each piece of data to the list
         num_elements.append(temp1)
 

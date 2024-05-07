@@ -1,7 +1,7 @@
 from gensim.models import FastText
 from gensim.utils import simple_preprocess
 import os
-import clean_data, prepare_data
+import prepare_data
 import random
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
