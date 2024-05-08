@@ -67,6 +67,6 @@ def prepare_data(file_path1, file_path2):
     # dev1 = group_data.group_data(dev1)
     dev1_unseen, dev1_seen = apply_group_data(datasets[0])
     dev2_unseen, dev2_seen = apply_group_data(datasets[1])
-    print(dev1_seen)
+    # print(dev1_seen)
     print('\033[92mData prepared successfully ✔\033[0m')
     return dev1_seen, dev1_unseen, dev2_seen, dev2_unseen
