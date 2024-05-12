@@ -27,7 +27,7 @@ def calculate_similarity(file_path, dev1, dev2, iterations=10000):
     print('Loading Pretrained BERT model')
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
     model = BertModel.from_pretrained('bert-base-uncased')
-    print('\033[Model Loaded ✔\033[0m')
+    print('\033[92mModel Loaded ✔\033[0m')
 
     # Function to compute BERT embeddings for a list of sentences
     def compute_embeddings(sentences):
