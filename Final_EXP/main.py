@@ -7,7 +7,7 @@ from tqdm import tqdm
 bert_option = 1
 
 if bert_option == 1:
-    from BERT import calculate_similarity
+    from BERT_new import calculate_similarity
 else: 
     from FastText_function_new import calculate_similarity
 
@@ -49,6 +49,9 @@ def main(directory_path):
 
 if __name__ == "__main__":
     # Directory path to read files from
-    # directory_path = r'/home/iotresearch/saad/data/KDDI-IoT-2019/ipfix'
-    directory_path = r'C:\Users\Saad Khan\OneDrive - UNSW\University\5th Yr\T1\Thesis A\Data'
+    directory_path = r'/home/iotresearch/saad/data/KDDI-IoT-2019/ipfix'
+
+    if not os.path.exists(directory_path):
+        directory_path = r'C:\Users\Saad Khan\OneDrive - UNSW\University\5th Yr\T1\Thesis A\Data'
+
     main(directory_path)
