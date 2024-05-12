@@ -29,13 +29,26 @@ def calculate_similarity(file_path, dev1, dev2, iterations=10000):
     model = BertModel.from_pretrained('bert-base-uncased')
     print('\033[92mModel Loaded ✔\033[0m')
 
+    # # Function to compute BERT embeddings for a list of sentences
+    # def compute_embeddings(sentences):
+    #     input_ids = tokenizer(sentences, padding=True, truncation=True, return_tensors="pt").input_ids
+    #     with torch.no_grad():
+    #         outputs = model(input_ids)
+    #         embeddings = outputs.last_hidden_state[:, 0, :].numpy()  # Extract embeddings for [CLS] tokens
+    #     return embeddings
+
     # Function to compute BERT embeddings for a list of sentences
     def compute_embeddings(sentences):
-        input_ids = tokenizer(sentences, padding=True, truncation=True, return_tensors="pt").input_ids
+        # Tokenize sentences and obtain attention mask
+        inputs = tokenizer(sentences, padding=True, truncation=True, return_tensors="pt")
+        input_ids = inputs.input_ids
+        attention_mask = inputs.attention_mask
+        
         with torch.no_grad():
-            outputs = model(input_ids)
+            outputs = model(input_ids, attention_mask=attention_mask)
             embeddings = outputs.last_hidden_state[:, 0, :].numpy()  # Extract embeddings for [CLS] tokens
         return embeddings
+
 
     # Flatten the list of lists into a single list for each device
     dev1_seen_flat = [sentence for sublist in dev1_seen for sentence in sublist]
