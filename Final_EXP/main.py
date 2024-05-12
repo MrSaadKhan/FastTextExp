@@ -1,9 +1,15 @@
 # main.py
 import os
-from FastText_function_new import calculate_similarity
 from result_builder import build_results
 from itertools import combinations_with_replacement
 from tqdm import tqdm
+
+bert_option = 1
+
+if bert_option == 1:
+    from BERT import calculate_similarity
+else: 
+    from FastText_function_new import calculate_similarity
 
 def main(directory_path):
     # Check if directory exists

@@ -2,7 +2,7 @@ import random
 import math
 import clean_data, group_data
 
-def prepare_data(file_path1, file_path2):
+def prepare_data(file_path1, file_path2, group_option=0):
     file_path = [file_path1, file_path2]
     num_elements = []
     data = []
@@ -19,8 +19,6 @@ def prepare_data(file_path1, file_path2):
     # for sublist in data:
     #     for subsublist in sublist:
     #         flattened_data.extend(subsublist)
-
-    
 
     def flatten(data):
         for sublist in data:
@@ -49,13 +47,6 @@ def prepare_data(file_path1, file_path2):
         remaining_items = [lst[i] for i in range(len(lst)) if i not in selected_indices]
         return selected_items, remaining_items
 
-    datasets = [dev1, dev2]
-    # dev1_unseen, dev1_seen = random_split(dev1, math.floor(0.3 * num_elements[0]))
-    del dev1
-
-    # dev2_unseen, dev2_seen = random_split(dev2, math.floor(0.3 * num_elements[1]))
-    del dev2
-
     def apply_group_data(dataset):
             # Check if the dataset is empty
         if len(dataset) == 0:
@@ -63,10 +54,20 @@ def prepare_data(file_path1, file_path2):
         else:
             unseen, seen = random_split(dataset, math.floor(0.3 * len(dataset)))
             return group_data.group_data(unseen), group_data.group_data(seen)
-    
-    # dev1 = group_data.group_data(dev1)
-    dev1_unseen, dev1_seen = apply_group_data(datasets[0])
-    dev2_unseen, dev2_seen = apply_group_data(datasets[1])
-    # print(dev1_seen)
+
+    if (group_option == 1):
+        datasets = [dev1, dev2]
+
+        del dev1
+        del dev2
+        dev1_unseen, dev1_seen = apply_group_data(datasets[0])
+        dev2_unseen, dev2_seen = apply_group_data(datasets[1])
+    else:
+        dev1_unseen, dev1_seen = random_split(dev1, math.floor(0.3 * num_elements[0]))
+        dev2_unseen, dev2_seen = random_split(dev2, math.floor(0.3 * num_elements[1]))
+        
+        del dev1
+        del dev2
+
     print('\033[92mData prepared successfully ✔\033[0m')
     return dev1_seen, dev1_unseen, dev2_seen, dev2_unseen

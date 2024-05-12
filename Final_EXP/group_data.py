@@ -46,7 +46,7 @@ def group_data(output):
     time_format = '%Y-%m-%d %H:%M:%S.%f'
     # Grouped in 5 min intervals
     time_group = 5
-
+    print(f"Grouping data by {time_group} mins")
     i = 0
 
     sorted_output = []
