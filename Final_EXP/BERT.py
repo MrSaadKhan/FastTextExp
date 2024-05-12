@@ -24,8 +24,10 @@ def calculate_similarity(file_path, dev1, dev2, iterations=10000):
     dev1_seen, dev1_unseen, dev2_seen, dev2_unseen = prepare_data.prepare_data(os.path.join(file_path, dev1), os.path.join(file_path, dev2), 0)
 
     # Load pre-trained BERT tokenizer and model
+    print('Loading Pretrained BERT model')
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
     model = BertModel.from_pretrained('bert-base-uncased')
+    print('\033[Model Loaded ✔\033[0m')
 
     # Function to compute BERT embeddings for a list of sentences
     def compute_embeddings(sentences):
@@ -72,6 +74,17 @@ def calculate_similarity(file_path, dev1, dev2, iterations=10000):
     # Calculate mean and standard deviation for unseen data
     mu_diff_device_unseen = np.mean(different_device_similarities_unseen)
     sigma_diff_device_unseen = np.std(different_device_similarities_unseen)
+
+    # Print results
+    print('\033[93mSeen Data:\033[0m')
+
+    print(f"Average similarity between {dev1} and {dev2}:" + '\033[93m', mu_diff_device_seen, '\033[0m')
+    print(f"Standard deviation between {dev1} and {dev2}:" + '\033[93m', sigma_diff_device_seen, '\033[0m')
+    
+    print('\033[93mUnseen Data:\033[0m')
+
+    print(f"Average similarity between {dev1} and {dev2}:" + '\033[93m', mu_diff_device_unseen, '\033[0m')
+    print(f"Standard deviation between {dev1} and {dev2}:" + '\033[93m', sigma_diff_device_unseen, '\033[0m')
 
     return mu_diff_device_seen, sigma_diff_device_seen, mu_diff_device_unseen, sigma_diff_device_unseen
 
