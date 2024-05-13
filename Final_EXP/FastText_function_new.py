@@ -85,6 +85,11 @@ def calculate_similarity(file_path, dev1, dev2, iterations=10000):
         print("Average similarity for 2 flows with 2 different devices:" + '\033[91mN/A\033[0m')
         print("Standard deviation for 2 flows with 2 different devices:" + '\033[91mN/A\033[0m')
         
+        print('\033[93mUnseen Data:\033[0m')
+
+        print(f"Average similarity between {dev1} and {dev2}:" + '\033[91mN/A\033[0m')
+        print(f"Standard deviation between {dev1} and {dev2}:" + '\033[91mN/A\033[0m')
+            
         return 0, 0, 0, 0
 
     # Additional tokenization for word embeddings

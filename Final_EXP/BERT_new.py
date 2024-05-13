@@ -20,13 +20,31 @@ def calculate_similarity(file_path, dev1, dev2, iterations=10000):
         Tuple: Tuple containing mean and standard deviation of similarity scores
                for seen and unseen data.
     """
+    vector_size = 768 # 768 is default
+
     # Load data
     dev1_seen, dev1_unseen, dev2_seen, dev2_unseen = prepare_data.prepare_data(os.path.join(file_path, dev1), os.path.join(file_path, dev2), 0)
+
+    # Check if sequences are empty
+    if not dev1_seen or not dev2_seen:
+        print(f"One or both of the sequences for {dev1} and {dev2} are empty.")
+        print('\033[93mSeen Data:\033[0m')
+
+        print("Average similarity for 2 flows with 2 different devices:" + '\033[91mN/A\033[0m')
+        print("Standard deviation for 2 flows with 2 different devices:" + '\033[91mN/A\033[0m')
+        
+        print('\033[93mUnseen Data:\033[0m')
+
+        print(f"Average similarity between {dev1} and {dev2}:" + '\033[91mN/A\033[0m')
+        print(f"Standard deviation between {dev1} and {dev2}:" + '\033[91mN/A\033[0m')
+            
+        return 0, 0, 0, 0
+
 
     # Load pre-trained BERT tokenizer and model
     print('Loading Pretrained BERT model')
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-    model = BertModel.from_pretrained('bert-base-uncased')
+    model = BertModel.from_pretrained('bert-base-uncased', hidden_size=vector_size)
     print('\033[92mModel Loaded ✔\033[0m')
 
     # Function to compute BERT embeddings for a single sentence
