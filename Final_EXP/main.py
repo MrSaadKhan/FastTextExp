@@ -45,7 +45,11 @@ def main(directory_path):
         
         if classifier_option == 1:
             ## SVC classifier commands
-            BERT_new.bert(directory_path, dev1, dev2, classifier_option)
+            if dev1 != dev2:
+                BERT_new.bert(directory_path, dev1, dev2, classifier_option)
+            else:
+                print("Same device - Can not classify")
+
             
         # Update progress bar
         progress_bar.update(1)
