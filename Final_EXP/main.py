@@ -4,12 +4,16 @@ from result_builder import build_results
 from itertools import combinations_with_replacement
 from tqdm import tqdm
 
+classifier_option = 1 # 0 for calculate_similarity, 1 for SVC classifier
 bert_option = 1
 
 if bert_option == 1:
-    from BERT_new import calculate_similarity
+    import BERT_new
 else: 
     from FastText_function_new import calculate_similarity
+
+if classifier_option != 0:
+    import classifier
 
 def main(directory_path):
     # Check if directory exists
@@ -35,9 +39,14 @@ def main(directory_path):
     # Iterate through each combination
     for dev1, dev2 in device_combinations:
         # print(dev1, dev2)
-        mu_diff_device_seen, sigma_diff_device_seen, mu_diff_device_unseen, sigma_diff_device_unseen = calculate_similarity(directory_path, dev1, dev2)
-        build_results(device_indices, dev1, dev2, mu_diff_device_seen, sigma_diff_device_seen, mu_diff_device_unseen, sigma_diff_device_unseen)
+        if classifier_option == 0:
+            mu_diff_device_seen, sigma_diff_device_seen, mu_diff_device_unseen, sigma_diff_device_unseen = BERT_new.bert(directory_path, dev1, dev2, classifier_option)
+            build_results(device_indices, dev1, dev2, mu_diff_device_seen, sigma_diff_device_seen, mu_diff_device_unseen, sigma_diff_device_unseen)
         
+        if classifier_option == 1:
+            ## SVC classifier commands
+            BERT_new.bert(directory_path, dev1, dev2, classifier_option)
+            
         # Update progress bar
         progress_bar.update(1)
         # progress_bar.set_description(f"\033[33mProgress: {progress_bar.n / len(device_combinations) * 100:.2f}%\033[33m")

@@ -1,0 +1,45 @@
+import numpy as np
+from transformers import BertTokenizer, BertModel
+import torch
+
+def create_embeddings(sentences):
+    # Load pre-trained BERT tokenizer and model
+    print('Loading Pretrained BERT model')
+    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+    model = BertModel.from_pretrained('bert-base-uncased')
+    print('\033[92mModel Loaded ✔\033[0m')
+
+    model.eval()
+
+    embeddings = []
+
+    for sentence in sentences:
+        # Convert list of words to a single string sentence
+        sentence_str = ' '.join(sentence)
+        
+        # Tokenize the sentence
+        inputs = tokenizer(sentence_str, return_tensors='pt', truncation=True, padding=True, max_length=512)
+        
+        # Generate the embeddings
+        with torch.no_grad():
+            outputs = model(**inputs)
+        
+        # Get the embeddings for the [CLS] token
+        cls_embedding = outputs.last_hidden_state[0, 0, :].numpy()
+        
+        embeddings.append(cls_embedding)
+    
+    # Convert list of embeddings to a numpy array
+    embeddings_np = np.array(embeddings)
+
+    return embeddings_np
+
+# Example usage:
+sentences = [
+    ["This", "is", "the", "first", "sentence"],
+    ["Here", "is", "another", "one"],
+    ["And", "the", "third", "sentence"]
+]
+
+embeddings_a = create_embeddings(sentences)
+print(embeddings_a)  # Should be (3, 768) if there are 3 sentences

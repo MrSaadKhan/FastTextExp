@@ -6,24 +6,70 @@ import prepare_data
 import os
 from sklearn.metrics.pairwise import cosine_similarity
 
-def calculate_similarity(file_path, dev1, dev2, iterations=10000):
-    """
-    Compute similarity scores between seen and unseen data using BERT embeddings.
+# import time as rolex
 
-    Parameters:
-        file_path (str): Path to the data directory.
-        dev1 (str): Name of the first device.
-        dev2 (str): Name of the second device.
-        iterations (int): Number of iterations for computing similarity scores.
+def create_embeddings(model, tokenizer, sentences):
+    # Load pre-trained BERT tokenizer and model
+    print("Creating Embeddings:")
+    model.eval()
 
-    Returns:
-        Tuple: Tuple containing mean and standard deviation of similarity scores
-               for seen and unseen data.
-    """
+    embeddings = []
+
+    for sentence in sentences:
+        # Convert list of words to a single string sentence
+        sentence_str = ' '.join(sentence)
+        
+        # Tokenize the sentence
+        inputs = tokenizer(sentence_str, return_tensors='pt', truncation=True, padding=True, max_length=512)
+        
+        # Generate the embeddings
+        with torch.no_grad():
+            outputs = model(**inputs)
+        
+        # Get the embeddings for the [CLS] token
+        cls_embedding = outputs.last_hidden_state[0, 0, :].numpy()
+        
+        embeddings.append(cls_embedding)
+    
+    # Convert list of embeddings to a numpy array
+    embeddings_np = np.array(embeddings)
+    print('\033[92mEmbedding Created ✔\033[0m')
+    return embeddings_np
+
+def bert(file_path, dev1, dev2, classifier_option, iterations=10000):
+    # classifier_option: 0 for calculate_similarity, 1 for SVC classifier
     vector_size = 768 # 768 is default
 
+    group_option = 0
+    time_group = 2
+    
+    num2word_option = 0
+
     # Load data
-    dev1_seen, dev1_unseen, dev2_seen, dev2_unseen = prepare_data.prepare_data(os.path.join(file_path, dev1), os.path.join(file_path, dev2), 0)
+    dev1_seen, dev1_unseen, dev2_seen, dev2_unseen = prepare_data.prepare_data(os.path.join(file_path, dev1), os.path.join(file_path, dev2), group_option, time_group, num2word_option)
+
+    # Load pre-trained BERT tokenizer and model
+    print('Loading Pretrained BERT model')
+    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+    model = BertModel.from_pretrained('bert-base-uncased', hidden_size=vector_size)
+    print('\033[92mModel Loaded ✔\033[0m')
+
+    if classifier_option == 0:
+        mu_diff_device_seen, sigma_diff_device_seen, mu_diff_device_unseen, sigma_diff_device_unseen = calculate_similarity(model, tokenizer, dev1, dev2, dev1_seen, dev1_unseen, dev2_seen, dev2_unseen, iterations=10000)
+        return mu_diff_device_seen, sigma_diff_device_seen, mu_diff_device_unseen, sigma_diff_device_unseen
+    
+    else:
+        import classifier
+        # create embeddings of the data
+
+        dev1_seen_embedding = create_embeddings(model, tokenizer, dev1_seen)
+        dev1_unseen_embedding = create_embeddings(model, tokenizer, dev1_unseen)
+        dev2_seen_embedding = create_embeddings(model, tokenizer, dev2_seen)
+        dev2_unseen_embedding = create_embeddings(model, tokenizer, dev2_unseen)
+
+        classifier.classifier(file_path, dev1, dev2, dev1_seen_embedding, dev1_unseen_embedding, dev2_seen_embedding, dev2_unseen_embedding, classifier_option)
+        
+def calculate_similarity(model, tokenizer, dev1, dev2, dev1_seen, dev1_unseen, dev2_seen, dev2_unseen, iterations=10000):
 
     # Check if sequences are empty
     if not dev1_seen or not dev2_seen:
@@ -39,13 +85,6 @@ def calculate_similarity(file_path, dev1, dev2, iterations=10000):
         print(f"Standard deviation between {dev1} and {dev2}:" + '\033[91mN/A\033[0m')
             
         return 0, 0, 0, 0
-
-
-    # Load pre-trained BERT tokenizer and model
-    print('Loading Pretrained BERT model')
-    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-    model = BertModel.from_pretrained('bert-base-uncased', hidden_size=vector_size)
-    print('\033[92mModel Loaded ✔\033[0m')
 
     # Function to compute BERT embeddings for a single sentence
     def compute_embedding(sentence):
@@ -68,13 +107,17 @@ def calculate_similarity(file_path, dev1, dev2, iterations=10000):
         sentence1 = dev1_seen[random_pair_index]
         sentence2 = dev2_seen[random_pair_index2]
 
+        # time1 = rolex.time()
         # Compute embeddings for the selected pair of sentences
         embedding1 = compute_embedding(sentence1)
         embedding2 = compute_embedding(sentence2)
-
+        # time2 = rolex.time()
         # Calculate cosine similarity between embeddings
         similarity_score_diff_device = cosine_similarity(embedding1, embedding2)[0, 0]
+        # time3 = rolex.time()
+        print(similarity_score_diff_device)
         different_device_similarities_seen.append(similarity_score_diff_device)
+        # print(f"Compute vectors: {time2-time1} \n Compute similarity {time3-time2}")
 
     # Perform iterations for unseen data
     for _ in range(iterations):  

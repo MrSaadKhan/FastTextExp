@@ -20,10 +20,8 @@ def calculate_similarity(file_path, dev1, dev2, iterations=10000):
         Tuple: Tuple containing mean and standard deviation of similarity scores
                for seen and unseen data.
     """
-    group_option = 0
-    time_group = 2
     # Load data
-    dev1_seen, dev1_unseen, dev2_seen, dev2_unseen = prepare_data.prepare_data(os.path.join(file_path, dev1), os.path.join(file_path, dev2), group_option, time_group)
+    dev1_seen, dev1_unseen, dev2_seen, dev2_unseen = prepare_data.prepare_data(os.path.join(file_path, dev1), os.path.join(file_path, dev2), 0)
 
     # Load pre-trained BERT tokenizer and model
     print('Loading Pretrained BERT model')

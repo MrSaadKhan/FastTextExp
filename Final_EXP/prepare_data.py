@@ -1,8 +1,8 @@
 import random
 import math
-import clean_data, group_data
+import clean_data, group_data, number_to_words
 
-def prepare_data(file_path1, file_path2, group_option=0):
+def prepare_data(file_path1, file_path2, group_option=0, time_group=5, num2word_option=0):
     file_path = [file_path1, file_path2]
     num_elements = []
     data = []
@@ -53,7 +53,7 @@ def prepare_data(file_path1, file_path2, group_option=0):
            return [], []
         else:
             unseen, seen = random_split(dataset, math.floor(0.3 * len(dataset)))
-            return group_data.group_data(unseen), group_data.group_data(seen)
+            return group_data.group_data(unseen, time_group), group_data.group_data(seen, time_group)
 
     if (group_option == 1):
         datasets = [dev1, dev2]
@@ -68,6 +68,15 @@ def prepare_data(file_path1, file_path2, group_option=0):
         
         del dev1
         del dev2
+
+    if num2word_option == 1:
+        new_data = [dev1_seen, dev1_unseen, dev2_seen, dev2_unseen]
+        for i in range(len(new_data)):
+            new_data[i] = number_to_words.convert_numericals_to_words(new_data[i])
+        
+        # Unpacking the modified lists back to their original variables
+        dev1_seen, dev1_unseen, dev2_seen, dev2_unseen = new_data
+        del new_data
 
     print('\033[92mData prepared successfully ✔\033[0m')
     return dev1_seen, dev1_unseen, dev2_seen, dev2_unseen

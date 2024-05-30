@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 #     return sorted_output
 
 
-def group_data(output):
+def group_data(output, time_group = 5):
     # print("Cleaning data... for " + os.path.split(target_file)[1])
     # start_time = time.time()
     
@@ -44,8 +44,8 @@ def group_data(output):
     # output = group_data(output)
 
     time_format = '%Y-%m-%d %H:%M:%S.%f'
-    # Grouped in 5 min intervals
-    time_group = 5
+    # Grouped in intervals. 5 mins by default
+    # time_group = 5
     print(f"Grouping data by {time_group} mins")
     i = 0
 
