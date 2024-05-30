@@ -9,7 +9,9 @@ def classifier(file_path, dev1, dev2, dev1_seen, dev1_unseen, dev2_seen, dev2_un
         return
 
 def svc_classifier(file_path, dev1, dev2, dev1_seen, dev1_unseen, dev2_seen, dev2_unseen):
-
+    if dev1 == dev2:
+        print("Same device - Can not classify")
+        return
     # Combine embeddings and create labels
     X_train = np.vstack((dev1_seen, dev2_seen))
     y_train = np.array([dev1] * len(dev1_seen) + [dev2] * len(dev2_seen))
